@@ -1,4 +1,5 @@
-let points = 0;
+let playerPoints = 0;
+let compPoints = 0;
 
 function getComputerChoice(){
     let choice = Math.floor(Math.random() * 3) + 1;
@@ -39,21 +40,24 @@ function getPlayerChoice() {
 function playRound(){
     let computer = getComputerChoice();
     let player = getPlayerChoice();
+
+    console.log("Player chooses: " + player);
+    console.log("Computer chooses: " + computer);
     
     // Check for a draw condition
     if(computer === player){
-        result = "DRAW!";
+        console.log("DRAW!");
     } 
     // Check for computer win conditions
     else if((computer === "ROCK" && player === "SCISSORS") || 
             (computer === "PAPER" && player === "ROCK") || 
             (computer === "SCISSORS" && player === "PAPER")){
-        points -= 1;
+        compPoints += 1;
     } 
     // If it's not a draw and the computer hasn't won, then the player wins
     else {
-        points += 1;
-    }
+        playerPoints += 1;
+    }    
 }
 
 function gameLoop(){
@@ -61,19 +65,23 @@ function gameLoop(){
 
     while(!winner){
         playRound();
-        if(points === 2){
-            console.log("YOU WIN!!");
+        if(playerPoints == 2){
+            console.log("You WIN!");
             winner = true;
-        } else if(points === -3){
-            console.log("Computer WINS!!");
+            //Reset points to play again when button is pressed
+            playerPoints = 0;
+            compPoints = 0;
+        } else if(compPoints == 2){
+            console.log("Computer WINS!");
             winner = true;
+            //Reset points to play again when button is pressed
+            playerPoints = 0;
+            compPoints = 0;
         } else {
-            console.log("Player has " + points + " points.");
-            console.log("Computer has " + (points * -1) + " points.");
-        }        
+            console.log("Player Points: " + playerPoints);
+            console.log("Computer Points: " + compPoints);
+        }
     }
 }
 
-document.getElementById("startGameButton").addEventListener("click", function() {
-    gameLoop();
-});
+document.getElementById("startGameButton").addEventListener("click", gameLoop);
