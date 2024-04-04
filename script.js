@@ -1,6 +1,16 @@
+let points = 0;
+
 function getComputerChoice(){
     let choice = Math.floor(Math.random() * 3) + 1;
-    return choice;
+
+    switch(choice){
+        case 1:
+            return "ROCK";
+        case 2:
+            return "PAPER";
+        case 3: 
+            return "SCISSORS";
+    }
 }
 
 function getPlayerChoice() {
@@ -26,29 +36,44 @@ function getPlayerChoice() {
     return playerChoice;
 }
 
-
 function playRound(){
     let computer = getComputerChoice();
     let player = getPlayerChoice();
     
-    console.log("Computer chooses: " + computer);
-    console.log("Player chooses: " + player);
-    
-    //Check for a draw condition
-    if(computer === 1 && player === "ROCK" || computer === 2 && player === "PAPER" || computer === 3 && player === "SCISSORS"){
-        console.log("DRAW!");
+    // Check for a draw condition
+    if(computer === player){
+        result = "DRAW!";
     } 
-    
-    //1 = ROCK
-    //2 = PAPER
-    //3 = SCISSORS
-    if(computer === 1 && player === "SCISSORS" || computer === 2 && player === "ROCK" || computer === 3 && player === "PAPER"){
-        let result = console.log("Computer WINS!!");
-    } else {
-        let result = console.log("YOU WIN!!");
-    }  
-
-    return result;
+    // Check for computer win conditions
+    else if((computer === "ROCK" && player === "SCISSORS") || 
+            (computer === "PAPER" && player === "ROCK") || 
+            (computer === "SCISSORS" && player === "PAPER")){
+        points -= 1;
+    } 
+    // If it's not a draw and the computer hasn't won, then the player wins
+    else {
+        points += 1;
+    }
 }
 
-console.log(playRound());
+function gameLoop(){
+    let winner = false;
+
+    while(!winner){
+        playRound();
+        if(points === 2){
+            console.log("YOU WIN!!");
+            winner = true;
+        } else if(points === -3){
+            console.log("Computer WINS!!");
+            winner = true;
+        } else {
+            console.log("Player has " + points + " points.");
+            console.log("Computer has " + (points * -1) + " points.");
+        }        
+    }
+}
+
+document.getElementById("startGameButton").addEventListener("click", function() {
+    gameLoop();
+});
