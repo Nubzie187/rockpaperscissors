@@ -1,5 +1,26 @@
 let playerPoints = 0;
 let compPoints = 0;
+let playerChoice = "";
+const choiceButtons = document.querySelectorAll(".choice-btn");
+const resetButton = document.getElementById("reset");
+
+const rock = document.getElementById("rock");
+rock.addEventListener("click", () => {
+    playerChoice = "ROCK";
+    playRound();
+})
+
+const paper = document.getElementById("paper");
+paper.addEventListener("click", () => {
+    playerChoice = "PAPER";
+    playRound();
+});
+
+const scissors = document.getElementById("scissors");
+scissors.addEventListener("click", () => {
+    playerChoice = "SCISSORS";
+    playRound();
+});
 
 function getComputerChoice(){
     let choice = Math.floor(Math.random() * 3) + 1;
@@ -14,74 +35,55 @@ function getComputerChoice(){
     }
 }
 
-function getPlayerChoice() {
-    let playerChoice;
-    let isValidChoice = false;
+function disableButtons(){
+    choiceButtons.forEach(button => {
+        button.disabled = true;
+    });    
+}
 
-    while (!isValidChoice) {
-        playerChoice = prompt("Enter ROCK, PAPER, or SCISSORS");
-        if (playerChoice) { 
-            playerChoice = playerChoice.toUpperCase();
-            if (playerChoice === "ROCK" || playerChoice === "PAPER" || playerChoice === "SCISSORS") {
-                isValidChoice = true;
-            } else {
-                alert("Invalid choice, please enter ROCK, PAPER, or SCISSORS.");
-            }
-        } else {
-            alert("You must enter a choice!");
-            playerChoice = "ROCK";
-            isValidChoice = true;
-        }
-    }
-
-    return playerChoice;
+function resetGame(){
+    resetButton.addEventListener("click", () => {
+        window.location.reload();
+    });
 }
 
 function playRound(){
     let computer = getComputerChoice();
-    let player = getPlayerChoice();
+    let player = playerChoice;
+    const playerScore = document.getElementById("player-score");
+    const compScore = document.getElementById("cpu-score");
+    const roundStatus = document.getElementById("round-winner");
 
     console.log("Player chooses: " + player);
     console.log("Computer chooses: " + computer);
     
     // Check for a draw condition
     if(computer === player){
-        console.log("DRAW!");
+        roundStatus.textContent = "DRAW!";
     } 
     // Check for computer win conditions
     else if((computer === "ROCK" && player === "SCISSORS") || 
             (computer === "PAPER" && player === "ROCK") || 
             (computer === "SCISSORS" && player === "PAPER")){
         compPoints += 1;
+        roundStatus.textContent = "Computer wins this round!";
+        compScore.textContent = compPoints;
     } 
     // If it's not a draw and the computer hasn't won, then the player wins
     else {
         playerPoints += 1;
+        roundStatus.textContent = "You win this round!";
+        playerScore.textContent = playerPoints;
     }    
-}
-
-function gameLoop(){
-    let winner = false;
-
-    while(!winner){
-        playRound();
-        if(playerPoints == 2){
-            console.log("You WIN!");
-            winner = true;
-            //Reset points to play again when button is pressed
-            playerPoints = 0;
-            compPoints = 0;
-        } else if(compPoints == 2){
-            console.log("Computer WINS!");
-            winner = true;
-            //Reset points to play again when button is pressed
-            playerPoints = 0;
-            compPoints = 0;
-        } else {
-            console.log("Player Points: " + playerPoints);
-            console.log("Computer Points: " + compPoints);
-        }
+    if(playerPoints === 5){
+        roundStatus.textContent = "YOU WIN!";
+        disableButtons();
+        resetButton.style.visibility = "visible";
+        resetGame();
+    } else if(compPoints === 5){
+        roundStatus.textContent = "YOU LOSE";
+        disableButtons();
+        resetButton.style.visibility = "visible";
+        resetGame();
     }
 }
-
-document.getElementById("startGameButton").addEventListener("click", gameLoop);

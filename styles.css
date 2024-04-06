@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(225, 134, 16);
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;    
+    margin: 10px auto;
+    max-height: 500px;
+    max-width: 500px;
+    border-radius: 10px;
+    padding: 50px;
+    background-color: brown;
+}
+
+.choice-btn {
+    width: 150px;
+    height: 75px;
+    margin: 10px 10px;
+}
+
+#reset {
+    margin: 10px auto;  
+    width: 150px;
+    height: 75px;
+    visibility: hidden;
+}
+
+#startGameButton {
+    width: 100px;
+    height: 50px;
+    margin: 25px auto;
+}
+
+h1 {
+    margin: 50px auto;
+    font-size: 48px;
+    color: black;    
+}
+
+.info-container {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 75px;
+    margin: 5px 15px;
+}
